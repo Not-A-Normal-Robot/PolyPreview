@@ -8,7 +8,6 @@ import { promisify } from "node:util";
 const EXEC_ASYNC = promisify(exec);
 const SRC_DIR = "./src";
 const DIST_DIR = "./dist";
-const EXTERNS_PATH = "./build/closure_externs.js";
 
 await fs.mkdir(DIST_DIR, { recursive: true });
 
@@ -23,7 +22,7 @@ async function compileJs(src, dest)
         await fs.copyFile(src, dest);
         return;
     }
-    await EXEC_ASYNC(`google-closure-compiler --js=${src} --js_output_file=${dest}`);
+    await EXEC_ASYNC(`google-closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS --js=${src} --js_output_file=${dest}`);
 }
 
 let promises =

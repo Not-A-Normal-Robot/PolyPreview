@@ -1,6 +1,9 @@
 // service Worker file (w.js)
 // @ts-check
 
+/** @type {CacheStorage} */
+var caches = globalThis.caches;
+
 /**
  * @typedef {Object} ExtendableEvent
  * @property {function(Promise<any>): undefined} waitUntil
@@ -12,31 +15,40 @@
  * @property {Request} request
  */
 
-/** @constant {string} */
+/** @const {string} */
 const CACHE_NAME = "ℙ⇒1";
 
 self.addEventListener(
     "install",
-    /** @param {unknown} event */
-    (event) =>
+    event =>
     {
-        /** @type {ExtendableEvent} */ (event).waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => cache.add("./index.html")),
-    )
+        let extEvent = /** @type {ExtendableEvent} */ /** @type {*} */ (event);
+        extEvent.waitUntil(
+            caches.open(CACHE_NAME)
+                .then((cache) => cache.addAll(["./index.html", "./s.js", "./w.js"])),
+        )
     }
 );
 
+/**
+ * @param {FetchEvent} event 
+ * @returns {Promise<Response>}
+ */
+async function respondToRequest(event)
+{
+    const reqUrl = new URL(event.request.url);
+
+    return (
+        reqUrl.origin == self.location.origin &&
+        await caches.match(event.request)
+    ) || await fetch(event.request)
+}
+
 self.addEventListener(
     "fetch",
-    /** @param {unknown} event */
-    (event) =>
+    event =>
     {
-        /** @type {FetchEvent} */ (event)
-            .respondWith(
-                caches.match(
-                    /** @type {FetchEvent} */(event).request
-                )
-            );
+        const fetchEvent = /** @type {FetchEvent} */ /** @type {*} */ (event);
+        fetchEvent.respondWith(respondToRequest(fetchEvent))
     }
 );
