@@ -1,0 +1,4 @@
+.vscode
+*.jar
+dist
+node_modules
