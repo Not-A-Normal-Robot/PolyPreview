@@ -5,11 +5,428 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PolyPreview</title>
-    <script async src="s.js"></script>
+    <style>
+        /* Colors from https://material-foundation.github.io/material-theme-builder/?primary=%23E1DBFF&colorMatch=false */
+        :root {
+            color-scheme: dark;
+            background-color: #141318;
+            color: white;
+            font-family: system-ui;
+        }
+
+        * {
+            box-sizing: border-box;
+            line-height: 1.7;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+            text-align: center;
+            scrollbar-gutter: stable both-edges;
+        }
+
+        .o {
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+        }
+
+        .r {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2em;
+        }
+
+        video {
+            width: calc(100vw - 2em);
+            width: calc(100svw - 2em);
+        }
+
+        article {
+            font-size: 0.85rem;
+        }
+
+        p {
+            text-align: start;
+            margin: auto;
+            max-width: 90ch;
+        }
+
+        video,
+        img,
+        audio {
+            max-width: 600px;
+        }
+
+        button,
+        video,
+        input {
+            min-width: 48px;
+            min-height: 48px;
+        }
+
+        .g {
+            display: flex;
+            position: relative;
+            flex: 1 1;
+        }
+
+        .g label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.75em;
+            height: 1em;
+            padding: 0.25rem 1rem;
+            pointer-events: none;
+            transition: color;
+        }
+
+        .g:has(input:focus) label {
+            color: #c3bbfc;
+        }
+
+        .g input {
+            padding-top: 1em;
+            max-width: calc(100vw - 1em);
+            max-width: calc(100svw - 1em);
+            flex-grow: 1;
+            background-color: #313036;
+            border: none;
+            border-bottom: 1px solid white;
+            border-radius: 0.5em;
+            border-end-start-radius: 0;
+            border-end-end-radius: 0;
+            padding-inline: 1em;
+            width: 60ch;
+            height: 64px;
+            font-size: 1em;
+            transition: border-color 0.2s;
+            flex-shrink: 1;
+        }
+
+        .g input:focus {
+            border-bottom: 1px solid #c3bbfc;
+        }
+
+        fieldset {
+            display: flex;
+            border: none;
+            gap: 0.25em;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        fieldset input {
+            appearance: none;
+            position: absolute;
+            margin: 0;
+            inset: 0;
+            cursor: pointer;
+            background-color: #474459;
+        }
+
+        fieldset input:checked {
+            background-color: #c3bbfc;
+        }
+
+        fieldset input:checked+label {
+            color: #090038;
+        }
+
+        fieldset>div {
+            display: flex;
+            position: relative;
+            flex: 1 1 15ch;
+        }
+
+        fieldset>div:first-child>input {
+            border-start-start-radius: 0.5em;
+            border-end-start-radius: 0.5em;
+        }
+
+        fieldset>div:last-child>input {
+            border-start-end-radius: 0.5em;
+            border-end-end-radius: 0.5em;
+        }
+
+        fieldset label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 1;
+            min-width: 48px;
+            width: 100%;
+            padding: 2ch 6ch;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #c3bbfc;
+            color: #090038;
+            border: none;
+            border-radius: 0.5em;
+            padding-inline: 1.25em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1em;
+            flex-grow: 1;
+        }
+
+        button svg {
+            width: 1.5em;
+            height: 1.5em;
+            vertical-align: middle;
+            margin-left: 0.5em;
+            fill: currentColor;
+        }
+
+        button:hover {
+            background-color: #b3a9f0;
+        }
+
+        #z {
+            display: none;
+            background-color: #ffaea4;
+            color: #220001;
+            text-align: start;
+            padding: 1em;
+            border-radius: 0.5em;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
+        }
+
+        footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+            gap: 1em;
+        }
+
+        @media screen and (max-width: 576px) {
+            footer ul {
+                flex-direction: column;
+            }
+
+            fieldset label {
+                padding-inline: 2.5ch;
+            }
+        }
+
+        a {
+            color: #c3bbfc;
+        }
+
+        a:visited {
+            color: #c3bbfc;
+        }
+
+        dialog {
+            background-color: #3c3a41;
+            color: white;
+            border: 1px solid #c3bbfc;
+            border-radius: 0.5em;
+            padding: 1em;
+            max-width: 90vw;
+        }
+
+        dialog::backdrop {
+            background-color: #000B;
+        }
+
+        dialog .r {
+            margin-block-start: 1em;
+        }
+
+        button.s {
+            background-color: #e8b4ca;
+            color: #1c0311;
+        }
+
+        button.s:hover {
+            background-color: #d8a0b6
+        }
+    </style>
 </head>
 
 <body>
+    <h1>PolyPreview</h1>
 
+    <noscript>
+        <strong>
+            This tool requires JavaScript to function properly, and it seems that JavaScript is disabled.
+        </strong>
+    </noscript>
+
+    <main class="col">
+        <div class="o">
+            <div class="g">
+                <label for="u">Media URL</label>
+                <input type="url" id="u" placeholder="Enter video URL...">
+            </div>
+            <div class="r">
+                <fieldset>
+                    <div>
+                        <input type="radio" name="t" id="1" value="1" checked>
+                        <label for="1">Video</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="t" id="2" value="2">
+                        <label for="2">Image</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="t" id="3" value="3">
+                        <label for="3">Audio</label>
+                    </div>
+                </fieldset>
+                <button id="l">
+                    Load
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <button id="d" style="display: none;" aria-label="Download current media file">
+            Download
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
+                viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                <path
+                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+            </svg>
+        </button>
+
+        <dialog id="g" aria-labelledby="a" aria-describedby="b">
+            <h2 id="a">
+                External Download Warning
+            </h2>
+            <p id="b">
+                This will redirect you to your pasted link to download the video file. <br>
+                Proceed <em>if and only if</em> you TRUST the source. <br>
+                It is your responsibility to be safe on the internet. <br>
+                You will be redirected to: <strong id="c"></strong>
+            </p>
+            <div class="r">
+                <button type="button" id="p">
+                    Proceed
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16" aria-hidden="true">
+                        <path
+                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                        <path
+                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+                    </svg>
+                </button>
+                <button type="button" class="s" id="e">
+                    Cancel
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16" aria-hidden="true">
+                        <path
+                            d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0" />
+                    </svg>
+                </button>
+            </div>
+        </dialog>
+
+        <div id="z" aria-live="assertive" role="alert">
+            <details>
+                <summary>
+                    An error occurred while loading the video
+                </summary>
+                Unfortunately, there is not a reliable way to conveniently show the error cause here. <br>
+                Some browsers, like Firefox, may show the error in the video player itself, while others may not show
+                any error at all. <br>
+                If you're able to, please check the console for more details. <br>
+                Some common causes include:
+                <ul>
+                    <li>
+                        The video URL is invalid or does not point to a video file.
+                    </li>
+                    <li>
+                        The video file is malformed or not supported by the browser.
+                    </li>
+                    <li>
+                        The server is unreachable or did not respond with a valid video file.
+                    </li>
+                    <li>
+                        Your connection is unstable.
+                    </li>
+                </ul>
+            </details>
+        </div>
+    </main>
+
+    <article>
+        <p>
+            Some video CDNs use special HTTP headers such that when you visit the links,
+            the video starts downloading instead of playing in the browser. In such cases,
+            it can be frustrating if you want to preview the video before downloading it.
+        </p>
+        <p>
+            This simple tool allows you to preview videos by entering the video URL in
+            the input field above.
+        </p>
+        <p>
+            All data is processed and requested client-side. No data is sent to
+            third party servers other than the URL you enter.
+        </p>
+        <p>
+            Playing audio is also supported.
+        </p>
+        <!-- <p>
+            <strong>Tip</strong>: Append a <code>#</code> followed by the source URL, in the URL bar to automatically
+            load it.
+            <br>
+            Example: <code>https://not-a-normal-robot.github.io/PolyPreview/#https://example.com/video.mp4</code>
+        </p> -->
+    </article>
+
+    <footer>
+        <ul>
+            <li>
+                Made by <a href="https://not-a-normal-robot.github.io/">NOT_A_ROBOT</a>
+            </li>
+            <li>
+                <a href="https://github.com/Not-A-Normal-Robot/PolyPreview">Source code</a>
+            </li>
+            <li>
+                Licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a>
+            </li>
+        </ul>
+    </footer>
+
+    {{mainscript}}
+    <!-- <script>navigator.serviceWorker?.register("./w.js")</script> -->
 </body>
 
 </html>

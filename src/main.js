@@ -1,0 +1,11 @@
+/** @const */
+const IDS = {
+    MEDIA_URL_INPUT: "u",
+    LOAD_BUTTON: "l",
+    DOWNLOAD_BUTTON: "d",
+    DOWNLOAD_DIALOG: "g",
+    DOWNLOAD_DIALOG_DOMAIN: "c",
+    DOWNLOAD_DIALOG_PROCEED_BUTTON: "p",
+    DOWNLOAD_DIALOG_CANCEL: "e",
+    ERROR_MESSAGE: "z",
+}
