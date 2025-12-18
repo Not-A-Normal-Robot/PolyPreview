@@ -78,7 +78,7 @@ async function createHtml()
         // SAFETY: This code is immutable and does not depend on user input.
         // No XSS is possible unless code review goes awry. And even then,
         // this code runs on compile-time, not run-time.
-        `<script>${mainJsCode}</script>`,
+        `<script>${mainJsCode.trim()}</script>`,
     );
 
     await fs.writeFile(

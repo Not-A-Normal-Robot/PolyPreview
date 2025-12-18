@@ -7,5 +7,8 @@ const IDS = {
     DOWNLOAD_DIALOG_DOMAIN: "c",
     DOWNLOAD_DIALOG_PROCEED_BUTTON: "p",
     DOWNLOAD_DIALOG_CANCEL: "e",
+    VIDEO_PLAYER: "v",
+    IMAGE_VIEWER: "i",
+    AUDIO_PLAYER: "h",
     ERROR_MESSAGE: "z",
 }

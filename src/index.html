@@ -27,12 +27,14 @@
             scrollbar-gutter: stable both-edges;
         }
 
+        /* .outer-column  */
         .o {
             display: flex;
             flex-direction: column;
             gap: 2em;
         }
 
+        /* .row */
         .r {
             display: flex;
             flex-wrap: wrap;
@@ -74,6 +76,7 @@
             min-height: 48px;
         }
 
+        /* .input-group */
         .g {
             display: flex;
             position: relative;
@@ -88,7 +91,7 @@
             height: 1em;
             padding: 0.25rem 1rem;
             pointer-events: none;
-            transition: color;
+            transition: color 0.2s;
         }
 
         .g:has(input:focus) label {
@@ -115,7 +118,7 @@
         }
 
         .g input:focus {
-            border-bottom: 1px solid #c3bbfc;
+            border-color: #c3bbfc;
         }
 
         fieldset {
@@ -127,6 +130,17 @@
             flex-grow: 1;
         }
 
+        /* .visually-hidden */
+        .h {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            border: 0;
+        }
+
         fieldset input {
             appearance: none;
             position: absolute;
@@ -134,6 +148,15 @@
             inset: 0;
             cursor: pointer;
             background-color: #474459;
+            transition: all 0.2s;
+        }
+
+        fieldset input:hover {
+            background-color: #4d4a60;
+        }
+
+        fieldset input:active {
+            background-color: #565268;
         }
 
         fieldset input:checked {
@@ -150,7 +173,7 @@
             flex: 1 1 15ch;
         }
 
-        fieldset>div:first-child>input {
+        fieldset>div:nth-child(2)>input {
             border-start-start-radius: 0.5em;
             border-end-start-radius: 0.5em;
         }
@@ -169,6 +192,7 @@
             min-width: 48px;
             width: 100%;
             padding: 2ch 6ch;
+            transition: color 0.2s;
         }
 
         button {
@@ -194,14 +218,20 @@
             fill: currentColor;
         }
 
-        button:hover {
+        button:hover,
+        fieldset input:checked:hover {
             background-color: #b3a9f0;
+        }
+
+        button:active,
+        fieldset input:checked:active {
+            background-color: #a9a0e6;
         }
 
         #z {
             display: none;
-            background-color: #ffaea4;
-            color: #220001;
+            background-color: #220001;
+            border: 0.1em dashed #ffaea4;
             text-align: start;
             padding: 1em;
             border-radius: 0.5em;
@@ -254,6 +284,7 @@
             border-radius: 0.5em;
             padding: 1em;
             max-width: 90vw;
+            z-index: 9;
         }
 
         dialog::backdrop {
@@ -270,7 +301,11 @@
         }
 
         button.s:hover {
-            background-color: #d8a0b6
+            background-color: #d8a0b6;
+        }
+
+        button.s:active {
+            background-color: #cc95aa;
         }
     </style>
 </head>
@@ -288,10 +323,11 @@
         <div class="o">
             <div class="g">
                 <label for="u">Media URL</label>
-                <input type="url" id="u" placeholder="Enter video URL...">
+                <input type="url" id="u" placeholder="Enter media URL...">
             </div>
             <div class="r">
                 <fieldset>
+                    <legend class="h">Media type</legend>
                     <div>
                         <input type="radio" name="t" id="1" value="1" checked>
                         <label for="1">Video</label>
@@ -315,7 +351,11 @@
             </div>
         </div>
 
-        <button id="d" style="display: none;" aria-label="Download current media file">
+        <video id="v"></video>
+        <img id="i">
+        <audio id="h"></audio>
+
+        <button id="d" style="display:none" aria-label="Download current media file">
             Download
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
                 viewBox="0 0 16 16" aria-hidden="true">
@@ -331,7 +371,7 @@
                 External Download Warning
             </h2>
             <p id="b">
-                This will redirect you to your pasted link to download the video file. <br>
+                This will redirect you to your pasted link to download the media file. <br>
                 Proceed <em>if and only if</em> you TRUST the source. <br>
                 It is your responsibility to be safe on the internet. <br>
                 You will be redirected to: <strong id="c"></strong>
@@ -361,22 +401,22 @@
         <div id="z" aria-live="assertive" role="alert">
             <details>
                 <summary>
-                    An error occurred while loading the video
+                    An error occurred while loading the media
                 </summary>
                 Unfortunately, there is not a reliable way to conveniently show the error cause here. <br>
-                Some browsers, like Firefox, may show the error in the video player itself, while others may not show
+                Some browsers, like Firefox, may show the error in the media display itself, while others may not show
                 any error at all. <br>
                 If you're able to, please check the console for more details. <br>
                 Some common causes include:
                 <ul>
                     <li>
-                        The video URL is invalid or does not point to a video file.
+                        The media URL is invalid or does not point to a media file.
                     </li>
                     <li>
-                        The video file is malformed or not supported by the browser.
+                        The media file is malformed or not supported by the browser.
                     </li>
                     <li>
-                        The server is unreachable or did not respond with a valid video file.
+                        The server is unreachable or did not respond with a valid media file.
                     </li>
                     <li>
                         Your connection is unstable.
@@ -388,12 +428,12 @@
 
     <article>
         <p>
-            Some video CDNs use special HTTP headers such that when you visit the links,
-            the video starts downloading instead of playing in the browser. In such cases,
-            it can be frustrating if you want to preview the video before downloading it.
+            Some media CDNs use special HTTP headers such that when you visit the links,
+            the media starts downloading instead of playing in the browser. In such cases,
+            it can be frustrating if you want to preview the media before downloading it.
         </p>
         <p>
-            This simple tool allows you to preview videos by entering the video URL in
+            This simple tool allows you to preview media by entering the media URL in
             the input field above.
         </p>
         <p>
@@ -401,14 +441,13 @@
             third party servers other than the URL you enter.
         </p>
         <p>
-            Playing audio is also supported.
-        </p>
-        <!-- <p>
-            <strong>Tip</strong>: Append a <code>#</code> followed by the source URL, in the URL bar to automatically
-            load it.
+            <b>URL tip!</b>
+            You can autofill the site using a known media type and URL by appending it into this
+            site's URL.
             <br>
-            Example: <code>https://not-a-normal-robot.github.io/PolyPreview/#https://example.com/video.mp4</code>
-        </p> -->
+            Example: <code>https://not-a-normal-robot/PolyPreview/?type=video#https://example.com/video.mp4</code>
+        </p>
+        </details>
     </article>
 
     <footer>
