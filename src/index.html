@@ -195,7 +195,7 @@
             transition: color 0.2s;
         }
 
-        button {
+        button:not([hidden]) {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -288,7 +288,9 @@
         }
 
         dialog::backdrop {
-            background-color: #000B;
+            background-color: #000D;
+            -webkit-backdrop-filter: blur(0.1em);
+            backdrop-filter: blur(0.1em);
         }
 
         dialog .r {
@@ -351,11 +353,11 @@
             </div>
         </div>
 
-        <video id="v" controls></video>
-        <img id="i">
-        <audio id="h" controls></audio>
+        <video id="v" controls hidden></video>
+        <img id="i" hidden>
+        <audio id="h" controls hidden></audio>
 
-        <button id="d" style="display:none" aria-label="Download current media file">
+        <button id="d" hidden aria-label="Download current media file">
             Download
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download"
                 viewBox="0 0 16 16" aria-hidden="true">

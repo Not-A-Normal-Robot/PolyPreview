@@ -62,7 +62,7 @@ const [
     DOWNLOAD_BUTTON,
     DOWNLOAD_DIALOG,
     DOWNLOAD_DIALOG_DOMAIN,
-    DOWNLOAD_DIALOG_PROCEED_BUTTON,
+    DOWNLOAD_DIALOG_PROCEED,
     DOWNLOAD_DIALOG_CANCEL,
     VIDEO_PLAYER,
     IMAGE_VIEWER,
@@ -84,6 +84,8 @@ const [
 
 /** @private */
 let mediaUrl = "";
+/** @private */
+let loadedUrl = "";
 /** @type {MediaKind} */
 let mediaKind = MediaKind.NONE;
 
@@ -92,9 +94,8 @@ function updateMedia()
 {
     const kind = inferMediaKind(mediaUrl);
 
-    [VIDEO_PLAYER, IMAGE_VIEWER, AUDIO_PLAYER].forEach(element =>
-        /** @type {HTMLElement} */(element).hidden = true
-    );
+    [VIDEO_PLAYER, IMAGE_VIEWER, AUDIO_PLAYER, DOWNLOAD_BUTTON]
+        .forEach(element => /** @type {HTMLElement} */(element).hidden = true);
 
     if (!mediaUrl) return;
 
@@ -118,6 +119,8 @@ function updateMedia()
 
     display.hidden = false;
     display.src = mediaUrl;
+    loadedUrl = mediaUrl;
+    DOWNLOAD_BUTTON.hidden = false;
 }
 
 /**
@@ -309,3 +312,35 @@ function pushUrl()
 }
 
 window.onhashchange = loadFromUrl;
+
+DOWNLOAD_BUTTON.onclick = () =>
+{
+    try
+    {
+        DOWNLOAD_DIALOG_DOMAIN.textContent = new URL(mediaUrl).hostname;
+    } catch
+    {
+        DOWNLOAD_DIALOG_DOMAIN.textContent = mediaUrl;
+    }
+    DOWNLOAD_DIALOG.showModal();
+};
+
+DOWNLOAD_DIALOG_PROCEED.onclick = () =>
+{
+    DOWNLOAD_DIALOG.close();
+    const a = document.createElement("a");
+    a.href = loadedUrl;
+    a.download = /** @type {string} */ (loadedUrl.split("/").pop());
+    a.hidden = true;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+DOWNLOAD_DIALOG_CANCEL.onclick = () =>
+{
+    DOWNLOAD_DIALOG.close();
+};
+// TODO: Error message
