@@ -94,7 +94,7 @@ function updateMedia()
 {
     const kind = inferMediaKind(mediaUrl);
 
-    [VIDEO_PLAYER, IMAGE_VIEWER, AUDIO_PLAYER, DOWNLOAD_BUTTON]
+    [VIDEO_PLAYER, IMAGE_VIEWER, AUDIO_PLAYER, DOWNLOAD_BUTTON, ERROR_MESSAGE]
         .forEach(element => /** @type {HTMLElement} */(element).hidden = true);
 
     if (!mediaUrl) return;
@@ -343,4 +343,11 @@ DOWNLOAD_DIALOG_CANCEL.onclick = () =>
 {
     DOWNLOAD_DIALOG.close();
 };
-// TODO: Error message
+
+[VIDEO_PLAYER, IMAGE_VIEWER, AUDIO_PLAYER].forEach(element =>
+{
+    element.onerror = () =>
+    {
+        ERROR_MESSAGE.hidden = false;
+    }
+})
