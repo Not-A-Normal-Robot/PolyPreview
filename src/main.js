@@ -289,7 +289,6 @@ function onInputChange()
  */
 function onInputKeydown(event)
 {
-    debugger;
     if (event.key === "Enter")
         loadFromInput();
 }
