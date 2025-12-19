@@ -215,6 +215,9 @@
             margin-left: 0.5em;
             fill: none;
             stroke: currentColor;
+            stroke-width: 0.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         button:hover,
@@ -351,9 +354,8 @@
                 </fieldset>
                 <button id="l">
                     Load
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" stroke-linecap="round" aria-hidden="true"
-                        stroke-width="0.5">
-                        <path d="M1,4h6M5,2l2,2m0,0-2,2" />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" aria-hidden="true">
+                        <path d="M1,4h6M5,2l2,2-2,2" />
                     </svg>
                 </button>
             </div>
@@ -365,9 +367,8 @@
 
         <button id="d" hidden aria-label="Download current media file">
             Download
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" stroke-linecap="round" aria-hidden="true"
-                stroke-width="0.5">
-                <path d="M4,1v5M2,4l2,2m0,0l2-2M1,6v1m0,0h6m0,0V6" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" aria-hidden="true">
+                <path d="M4,1v5M2,4l2,2l2-2M1,6v1h6V6" />
             </svg>
         </button>
 
@@ -384,14 +385,13 @@
             <div class="r">
                 <button type="button" id="p">
                     Proceed
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" stroke-linecap="round" aria-hidden="true"
-                        stroke-width="0.5">
-                        <path d="M4,1v5M2,4l2,2m0,0l2-2M1,6v1m0,0h6m0,0V6" />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" aria-hidden="true">
+                        <path d="M4,1v5M2,4l2,2l2-2M1,6v1h6V6" />
                     </svg>
                 </button>
                 <button type="button" class="s" id="e">
                     Cancel
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 8 8" aria-hidden="true" stroke-width="0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 8 8" aria-hidden="true">
                         <circle r="3" />
                         <path d="M2-2-2,2" />
                     </svg>
