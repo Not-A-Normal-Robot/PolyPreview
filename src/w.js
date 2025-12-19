@@ -25,7 +25,7 @@ self.addEventListener(
         let extEvent = /** @type {ExtendableEvent} */ /** @type {*} */ (event);
         extEvent.waitUntil(
             caches.open(CACHE_NAME)
-                .then((cache) => cache.addAll(["./index.html", "./s.js", "./w.js"])),
+                .then((cache) => cache.addAll(["./index.html", "./f.svg", "./d.png", "./l.png", "./w.js"])),
         )
     }
 );

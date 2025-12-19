@@ -73,6 +73,8 @@ async function createHtml()
         { encoding: 'utf-8' }
     );
 
+    await fs.rm(path.join(DIST_DIR, MAIN_JS));
+
     const minHtmlInjectedCode = minHtmlCode.replace(
         MAIN_SCRIPT_INJECT_TEMPLATE,
         // SAFETY: This code is immutable and does not depend on user input.
@@ -87,4 +89,25 @@ async function createHtml()
     );
 }
 
-await createHtml();
+/** @type {[string, string][]} */
+const FILES_TO_COPY = [
+    ["favicon.svg", "f.svg"],
+    ["favicon.light.png", "l.png"],
+    ["favicon.dark.png", "d.png"],
+];
+
+async function copyFiles()
+{
+    await Promise.all(FILES_TO_COPY.map(([src, dest]) =>
+    {
+        return fs.copyFile(
+            path.join(SRC_DIR, src),
+            path.join(DIST_DIR, dest),
+        )
+    }))
+}
+
+await Promise.all([
+    copyFiles(),
+    createHtml(),
+]);
