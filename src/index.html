@@ -351,9 +351,9 @@
             </div>
         </div>
 
-        <video id="v"></video>
+        <video id="v" controls></video>
         <img id="i">
-        <audio id="h"></audio>
+        <audio id="h" controls></audio>
 
         <button id="d" style="display:none" aria-label="Download current media file">
             Download
@@ -445,7 +445,13 @@
             You can autofill the site using a known media type and URL by appending it into this
             site's URL.
             <br>
-            Example: <code>https://not-a-normal-robot/PolyPreview/?type=video#https://example.com/video.mp4</code>
+            Example: <code>https://not-a-normal-robot.github.io/PolyPreview/?type=1#https://example.com/video.mp4</code>
+            <br>
+            A type of 1 corresponds to video, 2 corresponds to image, and 3 corresponds to audio.
+            You can put the URL to the media after the type, preceded by <code>#</code>.
+            <br>
+            The type is optional and is sometimes inferrable from the URL.
+            For example: <code>https://not-a-normal-robot.github.io/PolyPreview/#https://example.com/video.mp4</code>
         </p>
         </details>
     </article>
