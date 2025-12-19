@@ -12,6 +12,8 @@ const DIST_DIR = "./dist";
 const INDEX_HTML = "index.html";
 const MAIN_JS = "main.js";
 const MAIN_SCRIPT_INJECT_TEMPLATE = "{{mainscript}}";
+const FAVICON_SVG = "favicon.svg";
+const FAVICON_INJECT_TEMPLATE = "{{favicon}}";
 
 await fs.mkdir(DIST_DIR, { recursive: true });
 
@@ -39,6 +41,57 @@ let promises =
 
 await Promise.all(promises);
 
+/**
+ * @param {string} htmlCode
+ * @returns {Promise<string>}
+ */
+async function injectMainJs(htmlCode)
+{
+    const mainJsCode = await fs.readFile(
+        path.join(DIST_DIR, MAIN_JS),
+        { encoding: 'utf-8' }
+    );
+
+    await fs.rm(path.join(DIST_DIR, MAIN_JS));
+
+    return htmlCode.replace(
+        MAIN_SCRIPT_INJECT_TEMPLATE,
+        // SAFETY: This code is immutable and does not depend on user input.
+        // No XSS is possible unless code review goes awry. And even then,
+        // this code runs on compile-time, not run-time.
+        `<script>${mainJsCode.trim()}</script>`,
+    );
+}
+
+/**
+ * @param {string} htmlCode
+ * @returns {Promise<string>}
+ */
+async function injectFavicon(htmlCode)
+{
+    let faviconCode = await fs.readFile(
+        path.join(SRC_DIR, FAVICON_SVG),
+        { encoding: 'utf-8' }
+    );
+
+    const PERCENT_ENCODING_MAP = [
+        ['#', '%23']
+    ];
+
+    for (const [from, to] of PERCENT_ENCODING_MAP)
+    {
+        faviconCode = faviconCode.replaceAll(from, to);
+    }
+
+    return htmlCode.replace(
+        FAVICON_INJECT_TEMPLATE,
+        // SAFETY: This code is immutable and does not depend on user input.
+        // No XSS is possible unless code review goes awry. And even then,
+        // this code runs on compile-time, not run-time.
+        `'data:image/svg+xml,${faviconCode}'`
+    );
+}
+
 async function createHtml()
 {
     const srcHtml = await fs.readFile(
@@ -49,7 +102,7 @@ async function createHtml()
     const minHtmlBuf = minifyHtml.minify(
         srcHtml,
         {
-            allow_noncompliant_unquoted_attribute_values: true,
+            allow_noncompliant_unquoted_attribute_values: false,
             allow_optimal_entities: true,
             allow_removing_spaces_between_attributes: true,
             keep_closing_tags: false,
@@ -67,31 +120,18 @@ async function createHtml()
         }
     );
 
-    const minHtmlCode = minHtmlBuf.toString('utf-8');
-    const mainJsCode = await fs.readFile(
-        path.join(DIST_DIR, MAIN_JS),
-        { encoding: 'utf-8' }
-    );
-
-    await fs.rm(path.join(DIST_DIR, MAIN_JS));
-
-    const minHtmlInjectedCode = minHtmlCode.replace(
-        MAIN_SCRIPT_INJECT_TEMPLATE,
-        // SAFETY: This code is immutable and does not depend on user input.
-        // No XSS is possible unless code review goes awry. And even then,
-        // this code runs on compile-time, not run-time.
-        `<script>${mainJsCode.trim()}</script>`,
-    );
+    let minHtmlCode = minHtmlBuf.toString('utf-8');
+    minHtmlCode = await injectMainJs(minHtmlCode);
+    minHtmlCode = await injectFavicon(minHtmlCode);
 
     await fs.writeFile(
         path.join(DIST_DIR, INDEX_HTML),
-        minHtmlInjectedCode
+        minHtmlCode
     );
 }
 
 /** @type {[string, string][]} */
 const FILES_TO_COPY = [
-    ["favicon.svg", "f.svg"],
     ["favicon.light.png", "l.png"],
     ["favicon.dark.png", "d.png"],
 ];

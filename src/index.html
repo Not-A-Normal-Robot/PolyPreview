@@ -102,7 +102,6 @@
             padding-top: 1em;
             max-width: calc(100vw - 1em);
             max-width: calc(100svw - 1em);
-            flex-grow: 1;
             background-color: #313036;
             border: none;
             border-bottom: 1px solid white;
@@ -114,7 +113,7 @@
             height: 64px;
             font-size: 1em;
             transition: border-color 0.2s;
-            flex-shrink: 1;
+            flex: 1 1;
         }
 
         .g input:focus {
@@ -127,7 +126,7 @@
             gap: 0.25em;
             padding: 0;
             margin: 0;
-            flex-grow: 1;
+            flex: 1;
         }
 
         /* .visually-hidden */
@@ -207,7 +206,7 @@
             cursor: pointer;
             transition: background-color 0.2s;
             font-size: 1em;
-            flex-grow: 1;
+            flex: 1;
         }
 
         button svg {
@@ -254,7 +253,6 @@
             padding: 0;
             margin: 0;
             display: flex;
-            flex-direction: row;
             gap: 1em;
         }
 
@@ -309,9 +307,9 @@
             background-color: #cc95aa;
         }
     </style>
-    <link rel="shortcut icon" href="./f.svg" type="image/svg+xml">
-    <link rel="shortcut icon" href="./d.png" type="image/png" media="(prefers-color-scheme: dark)">
-    <link rel="shortcut icon" href="./l.png" type="image/png" media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="{{favicon}}" type="image/svg+xml">
+    <link rel="shortcut icon" href="./d.png" media="(prefers-color-scheme: dark)">
+    <link rel="shortcut icon" href="./l.png" media="(prefers-color-scheme: light)">
 
     <meta property="og:title" content="PolyPreview">
     <meta property="og:type" content="website">
