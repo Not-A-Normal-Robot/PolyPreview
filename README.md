@@ -11,7 +11,10 @@ A revamp of
 - Works offline using Service Workers
 - Aggressive minification using Closure Compiler
 
-## Building
+## Building Dependencies
+- Java (a minimum of Java 11)
+- NPM or PNPM
 
-1. Install Java. A minimum of Java 11 is recommended.
-2.
+## Building
+1. Run `npm run build` in your terminal. Or `pnpm` instead of `npm` if you use that.
+2. The output is in `dist/`.
