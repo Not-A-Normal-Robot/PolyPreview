@@ -322,13 +322,15 @@
 </head>
 
 <body>
-    <h1>PolyPreview</h1>
+    <header>
+        <h1>PolyPreview</h1>
 
-    <noscript>
-        <strong>
-            This tool requires JavaScript to function properly, and it seems that JavaScript is disabled.
-        </strong>
-    </noscript>
+        <noscript>
+            <strong>
+                This tool requires JavaScript to function properly, and it seems that JavaScript is disabled.
+            </strong>
+        </noscript>
+    </header>
 
     <main class="col">
         <div class="o">
@@ -427,46 +429,50 @@
         </div>
     </main>
 
-    <article>
-        <p>
-            Some media CDNs use special HTTP headers such that when you visit the links,
-            the media starts downloading instead of playing in the browser. In such cases,
-            it can be frustrating if you want to preview the media before downloading it.
-        </p>
-        <p>
-            This simple tool allows you to preview media by entering the media URL in
-            the input field above.
-        </p>
-        <p>
-            All data is processed and requested client-side. No data is sent to
-            third party servers other than the URL you enter.
-        </p>
-        <p>
-            <b>URL tip!</b>
-            You can autofill the site using a known media type and URL by appending it into this
-            site's URL.
-            <br>
-            Example: <code>https://not-a-normal-robot.github.io/PolyPreview/?type=1#https://example.com/video.mp4</code>
-            <br>
-            A type of 1 corresponds to video, 2 corresponds to image, and 3 corresponds to audio.
-            You can put the URL to the media after the type, preceded by <code>#</code>.
-            <br>
-            The type is optional and is sometimes inferrable from the URL.
-            For example: <code>https://not-a-normal-robot.github.io/PolyPreview/#https://example.com/video.mp4</code>
-        </p>
-        </details>
-    </article>
+    <aside>
+        <article>
+            <p>
+                Some media CDNs use special HTTP headers such that when you visit the links,
+                the media starts downloading instead of playing in the browser. In such cases,
+                it can be frustrating if you want to preview the media before downloading it.
+            </p>
+            <p>
+                This simple tool allows you to preview media by entering the media URL in
+                the input field above.
+            </p>
+            <p>
+                All data is processed and requested client-side. No data is sent to
+                third party servers other than the URL you enter.
+            </p>
+            <p>
+                <b>URL tip!</b>
+                You can autofill the site using a known media type and URL by appending it into this
+                site's URL.
+                <br>
+                Example:
+                <code>https://not-a-normal-robot.github.io/PolyPreview/?type=1#https://example.com/video.mp4</code>
+                <br>
+                A type of 1 corresponds to video, 2 corresponds to image, and 3 corresponds to audio.
+                You can put the URL to the media after the type, preceded by <code>#</code>.
+                <br>
+                The type is optional and is sometimes inferrable from the URL.
+                For example:
+                <code>https://not-a-normal-robot.github.io/PolyPreview/#https://example.com/video.mp4</code>
+            </p>
+            </details>
+        </article>
+    </aside>
 
     <footer>
         <ul>
             <li>
-                Made by <a href="https://not-a-normal-robot.github.io/">NOT_A_ROBOT</a>
+                Made by <a rel="author" href="https://not-a-normal-robot.github.io/">NOT_A_ROBOT</a>
             </li>
             <li>
                 <a href="https://github.com/Not-A-Normal-Robot/PolyPreview">Source code</a>
             </li>
             <li>
-                Licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a>
+                Licensed under the <a rel="license external" href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a>
             </li>
         </ul>
     </footer>
