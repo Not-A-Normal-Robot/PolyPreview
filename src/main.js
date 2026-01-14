@@ -244,7 +244,7 @@ function loadFromUrl()
 loadFromUrl();
 
 /**
- * @privete
+ * @private
  * @returns {void}
  */
 function loadFromInput()
