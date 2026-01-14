@@ -330,7 +330,8 @@ DOWNLOAD_DIALOG_PROCEED.onclick = () =>
     DOWNLOAD_DIALOG.close();
     const a = document.createElement("a");
     a.href = loadedUrl;
-    a.download = /** @type {string} */ (loadedUrl.split("/").pop());
+    const urlParts = loadedUrl.split("/");
+    a.download = /** @type {string} */ (urlParts.pop() || urlParts.pop() || "download");
     a.hidden = true;
     a.target = "_blank";
     a.rel = "noopener noreferrer";
